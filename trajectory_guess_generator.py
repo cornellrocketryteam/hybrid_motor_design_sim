@@ -24,3 +24,16 @@ print('Estimated Delta V for launch: ' + str(delta_V_estimate))
 # Mass ratio = (rocket mass at ignition)/ (rocket mass at burnout)
 rocket_mass_ratio = np.exp(delta_V_estimate/c.Ce)
 print('Rocket Mass Ratio Estimate: ' + str(rocket_mass_ratio))
+
+propellant_mass = c.rocket_dry_mass*(rocket_mass_ratio)
+print('Rocket Propellant Mass Estimate: ' + str(propellant_mass))
+c.propellant_mass = propellant_mass
+
+avg_acceleration_guess = delta_V_estimate/c.burn_time_guess
+print('Avg. Acceleration Estimate: ' + str(avg_acceleration_guess))
+# F = ma, thrust - grav = (dry + prop) * avg_accel_est
+thrust_estimate_initial = c.g*(c.rocket_dry_mass + c.propellant_mass) + (c.rocket_dry_mass + c.propellant_mass)*avg_acceleration_guess
+print('Estimate of thrust produced by engine: ' + str(thrust_estimate_initial))
+
+
+

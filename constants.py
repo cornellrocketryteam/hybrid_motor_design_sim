@@ -6,3 +6,5 @@ R_earth = 6378100 # radius of earth in meters
 g = 9.81 #m/s^2 (earth gravity at sea level)
 burn_time_guess = 10 #seconds, initial guess for burn time (Estimate gravity loss)
 Ce = 2682 # Engine's effective exhaust velocity
+rocket_dry_mass = 60 # Kilograms
+propellant_mass = 70 #kg
