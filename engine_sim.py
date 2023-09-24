@@ -29,7 +29,10 @@ def engine_calcs(propellant_mass, thrust_estimate_initial):
 
     return nozzle_mdot_initial, throat_diameter, mox, V_exhaust,mdot
 
-def minimotor_calcs(fuel_mass, grain_length):
+def minimotor_calcs_OD(fuel_mass, grain_length):
     OD = 0.25*(3*grain_length - np.sqrt(9.0*grain_length**2 - 8*(grain_length**2 + (fuel_mass/(c.rho_htpb*np.pi*grain_length)))))
     ID = 2*grain_length-3*OD
     return OD, ID
+
+def minimotor_calcs_ID(fuel_mass, OD, L):
+     return np.sqrt(-4*((fuel_mass/(c.rho_htpb*np.pi*L)) - OD*OD/4))
