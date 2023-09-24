@@ -2,43 +2,34 @@
 import numpy as np
 import constants as c
 
-"""Final vapor mass"""
-mass_vapor = 0.12*c.propellant_mass
+def engine_calcs(propellant_mass, thrust_estimate_initial):
+    """Final vapor mass"""
+    mass_vapor = 0.12*propellant_mass
 
-# x is the propellant mass that when added to the final vapor mass, gives the required start propellant mass
-x = c.propellant_mass*(1-0.12)
-print("Mass of fuel required: " + str(mass_vapor) +  " kg")
+    # x is the propellant mass that when added to the final vapor mass, gives the required start propellant mass
+    x = propellant_mass*(1-0.12)
 
-"""The Nitrous Vapor Burn"""
+    """The Nitrous Vapor Burn"""
 
-"""How much nozzle mass flow rate?"""
+    """How much nozzle mass flow rate?"""
 
-R=287.1 #j/kg*k
-y= 1.3 # fluids constant
-pe= 101325 #pa
-pcp= 350 #psi 
-Tc=3300; #K 
-Ft=7040; #N
-pc=350*6894.76; #psi to pa 
 
-ves=np.sqrt((2*R*y/(y-1))*Tc*(1-(pe/pc)**((y-1)/y))) #hybrid propulsion book pg 166
-#ve=[str(ves) ' m/s']
-V_exhaust = ves
-print('Exhaust Velocity: ' + str(ves))
 
-mdot=Ft/ves
+    V_exhaust=np.sqrt((2*c.R*c.y/(c.y-1))*c.Tc*(1-(c.pe/c.pc)**((c.y-1)/c.y))) #hybrid propulsion book pg 166
+    
 
-gma=y*(2/(y+1))**((y+1)/(y-1));
-cstar=np.sqrt(((R*Tc)/gma))
-astar=(mdot*cstar)/pc ;
-throat_diameter_cm=np.sqrt(astar/np.pi)*2*100 # throat diameter in cm 
-print('Throat diameter estimate (cm): ' + str(throat_diameter_cm))
-mox=mdot*(7/8)
-print('Mass flowrate of oxidizer: ' + str(mox) + 'kg/s')
+    mdot=thrust_estimate_initial/V_exhaust
 
-thrust_estimate_initial = 7040 #N
-nozzle_mdot_initial = thrust_estimate_initial/V_exhaust
+    gma=c.y*(2/(c.y+1))**((c.y+1)/(c.y-1));
+    cstar=np.sqrt(((c.R*c.Tc)/gma))
+    astar=(mdot*cstar)/c.pc ;
+    throat_diameter=np.sqrt(astar/np.pi)*2 # throat diameter in cm 
+    mox=mdot*(7/8)
+    nozzle_mdot_initial = thrust_estimate_initial/V_exhaust
 
-print('Initial mass flowrate (nozzle): ' + str(nozzle_mdot_initial) + 'kg/s')
+    return nozzle_mdot_initial, throat_diameter, mox, V_exhaust,mdot
 
-# Combustion chamber:
+def minimotor_calcs(fuel_mass, grain_length):
+    OD = 0.25*(3*grain_length - np.sqrt(9.0*grain_length**2 - 8*(grain_length**2 + (fuel_mass/(c.rho_htpb*np.pi*grain_length)))))
+    ID = 2*grain_length-3*OD
+    return OD, ID
