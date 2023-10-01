@@ -1,0 +1,66 @@
+import tkinter as tk
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+
+# Create the main application window
+root = tk.Tk()
+root.title("Hybrid Rocket Motor Design Tool")
+
+# Create a frame to hold widgets
+frame = ttk.Frame(root)
+frame.pack(padx=10, pady=10)
+
+# Label and input field for burn duration
+burn_duration_label = ttk.Label(frame, text="Burn Duration (s):")
+burn_duration_label.grid(row=0, column=0, padx=5, pady=5)
+burn_duration_entry = ttk.Entry(frame)
+burn_duration_entry.grid(row=0, column=1, padx=5, pady=5)
+
+# Label and input field for desired apogee
+apogee_label = ttk.Label(frame, text="Desired Apogee (m):")
+apogee_label.grid(row=1, column=0, padx=5, pady=5)
+apogee_entry = ttk.Entry(frame)
+apogee_entry.grid(row=1, column=1, padx=5, pady=5)
+
+# Button to run the calculation
+def run_calculation():
+    # You can add your calculation code here
+    # For now, let's just display empty plots
+
+    # Create empty plots
+    fig = Figure(figsize=(8, 6))
+
+    # Double the vertical space between plots
+    fig.subplots_adjust(hspace=1.0)
+
+    # Plot 1: Thrust vs Time
+    ax1 = fig.add_subplot(311)
+    ax1.set_title("Thrust vs Time")
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Thrust (N)")
+
+    # Plot 2: Mass Flow Rate vs Time
+    ax2 = fig.add_subplot(312)
+    ax2.set_title("Mass Flow Rate vs Time")
+    ax2.set_xlabel("Time (s)")
+    ax2.set_ylabel("Mass Flow Rate (kg/s)")
+
+    # Plot 3: Placeholder for Altitude vs Time
+    ax3 = fig.add_subplot(313)
+    ax3.set_title("Altitude vs Time")
+    ax3.set_xlabel("Time (s)")
+    ax3.set_ylabel("Altitude (m)")
+
+    # Update the canvas with the new plots
+    canvas = FigureCanvasTkAgg(fig, master=frame)
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.grid(row=3, column=0, columnspan=2, padx=5, pady=5)
+    canvas.draw()
+
+run_button = ttk.Button(frame, text="Run Calculation", command=run_calculation)
+run_button.grid(row=2, columnspan=2, padx=5, pady=10)
+
+# Start the Tkinter main loop
+root.mainloop()
